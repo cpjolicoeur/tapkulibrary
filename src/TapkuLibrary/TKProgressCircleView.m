@@ -37,9 +37,17 @@
 @implementation TKProgressCircleView
 
 - (id) init{
-	self = [self initWithFrame:CGRectZero];	
+	self = [self initWithFrame:CGRectZero];
+    _stroke_color = [UIColor whiteColor];
 	return self;
 }
+
+- (id)initWithStrokeColor:(UIColor *)color {
+    self = [self init];
+    _stroke_color = color;
+    return self;
+}
+
 - (id) initWithFrame:(CGRect)frame {
 	frame.size = CGSizeMake(40,40);
 	if(!(self = [super initWithFrame:frame])) return nil;
@@ -58,11 +66,11 @@
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGRect r = CGRectInset(rect, 4, 4);
 	
-	CGContextSetRGBStrokeColor(context, 1.0, 1.0, 1.0, 1.0);
+    CGContextSetStrokeColorWithColor(context, _stroke_color.CGColor);
     CGContextSetLineWidth(context, 3.0);
     CGContextAddEllipseInRect(context, r);
 	CGContextStrokePath(context);
-	CGContextSetRGBFillColor(context,1,1,1,1);
+    CGContextSetFillColorWithColor(context, _stroke_color.CGColor);
 	
 	if(!_twirlMode){
 		CGContextAddArc(context, rect.size.width/2, rect.size.height/2, (rect.size.width/2)-7, M_PI/-2.0, ((M_PI*2.0) *_displayProgress) - M_PI/2.0 , false);
